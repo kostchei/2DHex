@@ -1,4 +1,3 @@
--- character.lua
 local character = {}
 local characterData = {}
 
@@ -24,6 +23,29 @@ local function tableToString(tbl)
     return result
 end
 
+function character.createCharacter()
+    local newCharacter = {
+        name = "New Character",
+        HP_Max = 100,
+        HP_Current = 100,
+        AC = 10,
+        attacks = {
+            {description = "Attack 1", toHit = "+5", damage = "1d8+3"},
+            {description = "Attack 2", toHit = "+4", damage = "1d6+2"},
+            {description = "Attack 3", toHit = "+6", damage = "1d10+4"}
+        },
+        movement = "30 feet",
+        actions = {"Action 1", "Action 2"},
+        attributes = {
+            Strength = 10,
+            Intelligence = 10,
+            Wisdom = 10
+        }
+    }
+    setDefaultAttributes(newCharacter)
+    characterData.selectedCharacter = newCharacter
+    print("New character created.")
+end
 
 function character.loadCharacterData()
     local files = love.filesystem.getDirectoryItems("toons")
@@ -45,7 +67,7 @@ function character.loadCharacterData()
         end
     end
     print("No valid Lua files found in 'toons' directory.")
-    character.createNewCharacter()  -- Create a new character if none are loaded
+    character.createCharacter()  -- Create a new character if none are loaded
 end
 
 function character.getSelectedCharacter()
