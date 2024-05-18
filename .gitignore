@@ -1,0 +1,24 @@
+# Byte-compiled Lua files
+*.luac
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files (for example, Visual Studio Code)
+.vscode/
+
+# Backup files
+*.bak
+*.swp
+*.swo
+
+# LuaRocks
+!.luarocks/
