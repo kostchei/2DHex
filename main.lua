@@ -9,7 +9,7 @@ function love.load()
     print("Main module loaded") 
     world.generateMap()
     character.createCharacter()
-    encounter.initialize()
+    --encounter.initialize() removed as player dependant
     ui.initialize()
 end
 

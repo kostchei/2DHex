@@ -13,6 +13,18 @@ local combatGrid = require("ui.components.combat_grid")
 -- Reference to the current active UI component
 local currentUI = menu  -- Start with the menu
 
+function ui.initialize()
+    -- Initialize UI components
+    menu.initialize() -- get to work adding initalize to all these as required
+    characterSheet.initialize()
+    inventory.initialize()
+    hexmap.initialize()
+    combatGrid.initialize()
+
+    -- Show the default UI
+    ui.showMenu()
+end
+
 -- Functions to show different UI components
 function ui.showMenu()
     ui.currentUI = "menu"
@@ -20,9 +32,13 @@ function ui.showMenu()
     menu.show()
 end
 
-function ui.showCharacterSheet()
+function ui.showCharacterSheet() -- example lazy intialisation
     ui.currentUI = "character_sheet"
     currentUI = characterSheet
+    if not characterSheet.isInitialized then
+        characterSheet.initialize()
+        characterSheet.isInitialized = true
+    end
     characterSheet.show()
 end
 
@@ -71,5 +87,5 @@ function ui.draw()
     end
 end
 
-
 return ui
+
