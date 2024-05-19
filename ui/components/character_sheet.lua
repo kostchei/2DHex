@@ -1,8 +1,15 @@
 -- Assuming 'character' module is correctly set up and functions as intended
 local character = require("character")
-character.loadCharacterData()  -- Loads the first Lua file from the 'toons' directory
 
-local character_sheet = {}  -- Define character_sheet as a local table to hold the functions
+local character_sheet = {
+    isInitialized = false  -- Flag to track initialization
+}
+
+function character_sheet.initialize()
+    -- Initialization logic, if any
+    character.loadCharacterData()  -- Loads the first Lua file from the 'toons' directory
+    character_sheet.isInitialized = true
+end
 
 function character_sheet.show()
     character.loadCharacterData()  -- Load data when the character sheet is shown
@@ -12,7 +19,6 @@ function character_sheet.update(dt)
     -- Handle any updates needed for the character sheet
 end
 
-
 function character_sheet.draw()
     local char = character.getSelectedCharacter()
     if char then  -- Safety check in case character data failed to load
@@ -20,7 +26,7 @@ function character_sheet.draw()
         local lineHeight = 20
 
         love.graphics.print("Name: " .. char.name, 10, y); y = y + lineHeight
-        love.graphics.print("Level: " .. char.level, 10, y); y = y + lineHeight
+        love.graphics.print("Level: " .. (char.level or "Unknown"), 10, y); y = y + lineHeight
         love.graphics.print("HP: " .. char.HP_Current .. "/" .. char.HP_Max, 10, y); y = y + lineHeight
         love.graphics.print("AC: " .. char.AC, 10, y); y = y + lineHeight
 
@@ -43,4 +49,3 @@ function character_sheet.draw()
 end
 
 return character_sheet  -- Return the character_sheet table to make it accessible where required
-

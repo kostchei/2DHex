@@ -2,14 +2,12 @@
 
 local menu = {}
 
--- Overlay settings
-menu.overlay = {}
-menu.overlay.isVisible = true
-menu.overlay.draw = function()
-    -- Draw a semi-transparent background to cover the screen
-    love.graphics.setColor(0, 0, 0, 128)  -- Semi-transparent black
-    love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-end
+-- Define colors
+local colors = {
+    background = {240/255, 234/255, 214/255},  -- Buff color
+    text = {45/255, 34/255, 24/255},          -- Very dark brown for text
+    edges = {139/255, 69/255, 19/255}         -- Pale brown for edges
+}
 
 -- New World Button
 menu.newWorldButton = {}
@@ -74,23 +72,21 @@ end
 
 -- Show the menu
 function menu.show()
-    menu.overlay.isVisible = true
-    -- Show logic
+    -- Show logic if needed
 end
 
 -- Update the menu
 function menu.update(dt)
-    -- Update logic
+    -- Update logic if needed
 end
 
 -- Draw the menu
 function menu.draw()
-    if menu.overlay.isVisible then
-        menu.overlay.draw()
-    end
-    
+    -- Set background color for the menu area
+    love.graphics.clear(colors.background)
+
     -- Draw the list of worlds and their characters
-    love.graphics.setColor(255, 255, 255)
+    love.graphics.setColor(colors.text)
     local y = 50
     for _, world in ipairs(menu.listOfWorlds) do
         love.graphics.print("World: " .. world.name, 50, y)
@@ -100,7 +96,10 @@ function menu.draw()
             y = y + 20
         end
     end
+
+    -- Draw basic shapes for visual confirmation
+    love.graphics.setColor(colors.edges)
+    love.graphics.rectangle("line", 40, 40, 300, 200)  -- Example rectangle for menu edges
 end
 
 return menu
-

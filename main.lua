@@ -6,23 +6,46 @@ local encounter = require("encounter")
 local ui = require("ui")
 
 function love.load()
-    print("Main module loaded") 
-    world.generateMap()
-    character.createCharacter()
-    --encounter.initialize() removed as player dependant
+    print("Main module loaded")
+    if world.generateMap then
+        world.generateMap()
+    end
+    if character.createCharacter then
+        character.createCharacter()
+    end
+    -- encounter.initialize() removed as player dependent
     ui.initialize()
+
+    -- Set background color (buff or off-white)
+    love.graphics.setBackgroundColor(240/255, 234/255, 214/255) -- RGB values for buff color
 end
 
 function love.update(dt)
-    world.update(dt)
-    character.update(dt)
-    encounter.update(dt)
-    ui.update(dt)
+    if world.update then
+        world.update(dt)
+    end
+    if character.update then
+        character.update(dt)
+    end
+    if encounter.update then
+        encounter.update(dt)
+    end
+    if ui.update then
+        ui.update(dt)
+    end
 end
 
 function love.draw()
-    world.draw()
-    character.draw()
-    encounter.draw()
-    ui.draw()
+    if world.draw then
+        world.draw()
+    end
+    if character.draw then
+        character.draw()
+    end
+    if encounter.draw then
+        encounter.draw()
+    end
+    if ui.draw then
+        ui.draw()
+    end
 end

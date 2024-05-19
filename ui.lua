@@ -5,7 +5,7 @@ ui.currentUI = "menu"  -- Start with the menu
 
 -- UI Components
 local menu = require("ui.components.menu")
--- local characterSheet = require("ui.components.character_sheet")
+local characterSheet = require("ui.components.character_sheet")
 -- local inventory = require("ui.components.inventory")
 -- local hexmap = require("ui.components.hex_map")
 -- local combatGrid = require("ui.components.combat_grid")
@@ -16,7 +16,7 @@ local currentUI = menu  -- Start with the menu
 function ui.initialize()
     -- Initialize UI components
     menu.initialize()
-    -- characterSheet.initialize()
+    characterSheet.initialize()
     -- inventory.initialize()
     -- hexmap.initialize()
     -- combatGrid.initialize()
@@ -32,15 +32,15 @@ function ui.showMenu()
     menu.show()
 end
 
--- function ui.showCharacterSheet() -- example lazy intialisation
---     ui.currentUI = "character_sheet"
---     currentUI = characterSheet
---     if not characterSheet.isInitialized then
---         characterSheet.initialize()
---         characterSheet.isInitialized = true
---     end
---     characterSheet.show()
--- end
+function ui.showCharacterSheet() -- example lazy initialization
+    ui.currentUI = "character_sheet"
+    currentUI = characterSheet
+    if not characterSheet.isInitialized then
+        characterSheet.initialize()
+        characterSheet.isInitialized = true
+    end
+    characterSheet.show()
+end
 
 -- function ui.showInventory()
 --     ui.currentUI = "inventory"
@@ -64,8 +64,8 @@ end
 function love.keypressed(key)
     if key == "escape" and ui.currentUI ~= "menu" then
         ui.showMenu()
-    -- elseif key == "c" and ui.currentUI ~= "character_sheet" then
-    --     ui.showCharacterSheet()
+    elseif key == "c" and ui.currentUI ~= "character_sheet" then
+        ui.showCharacterSheet()
     -- elseif key == "i" and ui.currentUI ~= "inventory" then
     --     ui.showInventory()
     end
