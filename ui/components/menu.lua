@@ -9,35 +9,44 @@ local colors = {
     edges = {139/255, 69/255, 19/255}         -- Pale brown for edges
 }
 
--- New World Button
+-- Define button actions
 menu.newWorldButton = {}
 menu.newWorldButton.onClick = function()
     -- Logic for creating a new world
+    print("New World button clicked")
 end
 
--- Load World Button
 menu.loadWorldButton = {}
 menu.loadWorldButton.onClick = function()
     -- Logic for loading a world
+    print("Load World button clicked")
 end
 
--- Select Character Button
 menu.selectCharacterButton = {}
 menu.selectCharacterButton.onClick = function()
     -- Logic for selecting a character
+    print("Select Character button clicked")
 end
 
--- Save Button
 menu.saveButton = {}
 menu.saveButton.onClick = function()
     -- Logic for saving
+    print("Save button clicked")
 end
 
--- Exit Button
 menu.exitButton = {}
 menu.exitButton.onClick = function()
     -- Logic for exiting
+    love.event.quit()
 end
+
+menu.buttons = {
+    {label = "New World", action = menu.newWorldButton.onClick},
+    {label = "Load World", action = menu.loadWorldButton.onClick},
+    {label = "Select Character", action = menu.selectCharacterButton.onClick},
+    {label = "Save", action = menu.saveButton.onClick},
+    {label = "Exit", action = menu.exitButton.onClick}
+}
 
 menu.listOfWorlds = {}
 
@@ -81,13 +90,22 @@ function menu.update(dt)
 end
 
 -- Draw the menu
-function menu.draw()
+function menu.draw(buttonYStart, buttonWidth, buttonHeight, buttonSpacing)
     -- Set background color for the menu area
     love.graphics.clear(colors.background)
 
+    -- Draw buttons
+    love.graphics.setColor(colors.edges)
+    local y = buttonYStart
+    for _, button in ipairs(menu.buttons) do
+        love.graphics.rectangle("line", 100, y, buttonWidth, buttonHeight)  -- Draw button rectangle
+        love.graphics.printf(button.label, 100, y + (buttonHeight / 4), buttonWidth, "center")  -- Draw button label
+        y = y + buttonHeight + buttonSpacing
+    end
+
     -- Draw the list of worlds and their characters
     love.graphics.setColor(colors.text)
-    local y = 50
+    y = buttonYStart + #menu.buttons * (buttonHeight + buttonSpacing) + buttonSpacing
     for _, world in ipairs(menu.listOfWorlds) do
         love.graphics.print("World: " .. world.name, 50, y)
         y = y + 20
@@ -96,10 +114,5 @@ function menu.draw()
             y = y + 20
         end
     end
-
-    -- Draw basic shapes for visual confirmation
-    love.graphics.setColor(colors.edges)
-    love.graphics.rectangle("line", 40, 40, 300, 200)  -- Example rectangle for menu edges
 end
-
 return menu

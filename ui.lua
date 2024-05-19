@@ -10,6 +10,14 @@ local characterSheet = require("ui.components.character_sheet")
 -- local hexmap = require("ui.components.hex_map")
 -- local combatGrid = require("ui.components.combat_grid")
 
+-- Button settings
+local buttonHeight = 50
+local buttonWidth = 4 * buttonHeight  -- Button width is four times the height
+local buttonSpacing = 20
+
+-- Button positions
+local buttonYStart = 100
+
 -- Reference to the current active UI component
 local currentUI = menu  -- Start with the menu
 
@@ -71,6 +79,19 @@ function love.keypressed(key)
     end
 end
 
+function love.mousepressed(x, y, button, istouch, presses)
+    if button == 1 and ui.currentUI == "menu" then
+        local buttonY = buttonYStart
+        for _, btn in ipairs(menu.buttons) do
+            if x >= 100 and x <= 100 + buttonWidth and y >= buttonY and y <= buttonY + buttonHeight then
+                btn.action()
+                break
+            end
+            buttonY = buttonY + buttonHeight + buttonSpacing
+        end
+    end
+end
+
 -- Update and Draw
 function ui.update(dt)
     if currentUI and currentUI.update then
@@ -80,11 +101,11 @@ end
 
 function ui.draw()
     if currentUI and currentUI.draw then
-        currentUI.draw()
+        currentUI.draw(buttonYStart, buttonWidth, buttonHeight, buttonSpacing)
     end
     -- if characterSheet.isVisible then
     --     characterSheet.draw()
-    -- end
-end
+    end
+
 
 return ui
