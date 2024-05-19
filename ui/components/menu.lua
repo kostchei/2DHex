@@ -9,15 +9,14 @@ menu.overlay.draw = function()
     -- Draw a semi-transparent background to cover the screen
     love.graphics.setColor(0, 0, 0, 128)  -- Semi-transparent black
     love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-end  -- Missing 'end' added here
+end
 
 -- New World Button
-menu.newWorldButton = {}  -- Assuming declaration is needed
+menu.newWorldButton = {}
 menu.newWorldButton.onClick = function()
     -- Logic for creating a new world
 end
 
--- Additional button setups could be structured similarly:
 -- Load World Button
 menu.loadWorldButton = {}
 menu.loadWorldButton.onClick = function()
@@ -42,4 +41,66 @@ menu.exitButton.onClick = function()
     -- Logic for exiting
 end
 
+menu.listOfWorlds = {}
+
+local function loadWorldsAndCharacters()
+    local gamesPath = "games"
+    local toonsPath = "toons"
+
+    local worlds = love.filesystem.getDirectoryItems(gamesPath)
+    for _, worldFile in ipairs(worlds) do
+        if worldFile:match("%.json$") then
+            local worldName = worldFile:sub(1, -6)  -- remove '.json' extension
+            local worldEntry = { name = worldName, characters = {} }
+            
+            local characterFiles = love.filesystem.getDirectoryItems(toonsPath)
+            for _, charFile in ipairs(characterFiles) do
+                if charFile:match("^" .. worldName .. "%..+%.json$") then
+                    local charName = charFile:match("^" .. worldName .. "%.(.+)%.json$")
+                    table.insert(worldEntry.characters, charName)
+                end
+            end
+            
+            table.insert(menu.listOfWorlds, worldEntry)
+        end
+    end
+end
+
+-- Initialize the menu
+function menu.initialize()
+    -- Load existing worlds and their characters
+    loadWorldsAndCharacters()
+end
+
+-- Show the menu
+function menu.show()
+    menu.overlay.isVisible = true
+    -- Show logic
+end
+
+-- Update the menu
+function menu.update(dt)
+    -- Update logic
+end
+
+-- Draw the menu
+function menu.draw()
+    if menu.overlay.isVisible then
+        menu.overlay.draw()
+    end
+    
+    -- Draw the list of worlds and their characters
+    love.graphics.setColor(255, 255, 255)
+    local y = 50
+    for _, world in ipairs(menu.listOfWorlds) do
+        love.graphics.print("World: " .. world.name, 50, y)
+        y = y + 20
+        for _, character in ipairs(world.characters) do
+            love.graphics.print("  Character: " .. character, 70, y)
+            y = y + 20
+        end
+    end
+end
+
 return menu
+

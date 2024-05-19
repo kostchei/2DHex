@@ -39,4 +39,14 @@ function encounter.generateEncounter(zone)
     return monsters
 end
 
+-- Placeholder update function
+function encounter.update(dt)
+    -- Placeholder logic for updating encounters
+end
+
+-- Placeholder draw function
+function encounter.draw()
+    -- Placeholder logic for drawing encounters
+end
+
 return encounter

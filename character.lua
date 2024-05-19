@@ -110,4 +110,14 @@ function character.saveCharacterData()
     end
 end
 
+-- Placeholder update function
+function character.update(dt)
+    -- Placeholder logic for updating character
+end
+
+-- Placeholder draw function
+function character.draw()
+    -- Placeholder logic for drawing character
+end
+
 return character -- Return the module table at the end
