@@ -2,8 +2,8 @@
 return {
     name = "Tim",
     level = 3,
-    HP_Max = 100,
-    HP_Current = 100,
+    HP_Max = 12,
+    HP_Current = 12,
     AC = 15,
     attacks = {
         {description = "Slash", toHit = "+5", damage = "1d6+3"},

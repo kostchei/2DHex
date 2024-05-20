@@ -26,8 +26,8 @@ end
 function character.createCharacter()
     local newCharacter = {
         name = "New Character",
-        HP_Max = 100,
-        HP_Current = 100,
+        HP_Max = 12,
+        HP_Current = 11,-- modded for tracking
         AC = 10,
         attacks = {
             {description = "Attack 1", toHit = "+5", damage = "1d8+3"},
@@ -76,8 +76,8 @@ end
 
 -- Define the setDefaultAttributes function after its forward declaration
 setDefaultAttributes = function(char)
-    char.HP_Max = char.HP_Max or 100
-    char.HP_Current = char.HP_Current or 100
+    char.HP_Max = char.HP_Max or 12
+    char.HP_Current = char.HP_Current or 10 -- modded for tracking
     char.AC = char.AC or 10
     char.attacks = char.attacks or {
         {description = "Attack 1", toHit = "+5", damage = "1d8+3"},

@@ -6,6 +6,12 @@ local encounter = require("encounter")
 local ui = require("ui")
 
 function love.load()
+    -- Set window title
+    love.window.setTitle("Champion")
+    
+    -- Set window size 
+    love.window.setMode(1920, 1080, {fullscreen = false, resizable = true, vsync = true})
+    
     print("Main module loaded")
     if world.generateMap then
         world.generateMap()
@@ -49,3 +55,4 @@ function love.draw()
         ui.draw()
     end
 end
+

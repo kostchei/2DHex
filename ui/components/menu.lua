@@ -89,8 +89,33 @@ function menu.update(dt)
     -- Update logic if needed
 end
 
+-- Handle mouse press events
+function menu.mousepressed(x, y, button, istouch, presses)
+    if button == 1 then  -- left mouse button
+        local buttonYStart = 100  -- Adjust as needed
+        local buttonWidth = 200    -- Adjust as needed
+        local buttonHeight = 50    -- Adjust as needed
+        local buttonSpacing = 20   -- Adjust as needed
+        
+        local bx = 100  -- Button x-position, adjust as needed
+        local by = buttonYStart
+        
+        for _, btn in ipairs(menu.buttons) do
+            if x >= bx and x <= bx + buttonWidth and y >= by and y <= by + buttonHeight then
+                btn.action()
+            end
+            by = by + buttonHeight + buttonSpacing
+        end
+    end
+end
+
 -- Draw the menu
-function menu.draw(buttonYStart, buttonWidth, buttonHeight, buttonSpacing)
+function menu.draw()
+    local buttonYStart = 100  -- Adjust as needed
+    local buttonWidth = 200    -- Adjust as needed
+    local buttonHeight = 50    -- Adjust as needed
+    local buttonSpacing = 20   -- Adjust as needed
+    
     -- Set background color for the menu area
     love.graphics.clear(colors.background)
 
@@ -115,4 +140,5 @@ function menu.draw(buttonYStart, buttonWidth, buttonHeight, buttonSpacing)
         end
     end
 end
+
 return menu

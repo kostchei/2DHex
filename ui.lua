@@ -80,15 +80,8 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
-    if button == 1 and ui.currentUI == "menu" then
-        local buttonY = buttonYStart
-        for _, btn in ipairs(menu.buttons) do
-            if x >= 100 and x <= 100 + buttonWidth and y >= buttonY and y <= buttonY + buttonHeight then
-                btn.action()
-                break
-            end
-            buttonY = buttonY + buttonHeight + buttonSpacing
-        end
+    if currentUI and currentUI.mousepressed then
+        currentUI.mousepressed(x, y, button, istouch, presses)
     end
 end
 
