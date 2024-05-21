@@ -1,5 +1,9 @@
 -- ui/components/menu.lua
+package.path = package.path .. ";D:/Code/2DHex/plugins/sqlite3/?.lua;" --D:/Code/2DHex/plugins/sqlite3/?/init.lua"
+--package.cpath = package.cpath .. ";D:/Code/2DHex/plugins/sqlite3/?.dll"
 
+local sqlite3 = require("sqlite3")
+local world = require("world") -- Assuming you have the world module as previously discussed
 local menu = {}
 
 -- Define colors
@@ -14,12 +18,14 @@ menu.newWorldButton = {}
 menu.newWorldButton.onClick = function()
     -- Logic for creating a new world
     print("New World button clicked")
+    world.createZone("forest", 1) -- Example of creating a new zone and tier
 end
 
 menu.loadWorldButton = {}
 menu.loadWorldButton.onClick = function()
     -- Logic for loading a world
     print("Load World button clicked")
+    world.loadZone("forest", 1) -- Example of loading a specific zone and tier
 end
 
 menu.selectCharacterButton = {}
@@ -32,6 +38,7 @@ menu.saveButton = {}
 menu.saveButton.onClick = function()
     -- Logic for saving
     print("Save button clicked")
+    world.saveWorld() -- Assuming you have a saveWorld function
 end
 
 menu.exitButton = {}
@@ -51,26 +58,16 @@ menu.buttons = {
 menu.listOfWorlds = {}
 
 local function loadWorldsAndCharacters()
-    local gamesPath = "games"
-    local toonsPath = "toons"
+    local db = sqlite3.open("world.db")
+    local zonesAndTiers = {}
 
-    local worlds = love.filesystem.getDirectoryItems(gamesPath)
-    for _, worldFile in ipairs(worlds) do
-        if worldFile:match("%.json$") then
-            local worldName = worldFile:sub(1, -6)  -- remove '.json' extension
-            local worldEntry = { name = worldName, characters = {} }
-            
-            local characterFiles = love.filesystem.getDirectoryItems(toonsPath)
-            for _, charFile in ipairs(characterFiles) do
-                if charFile:match("^" .. worldName .. "%..+%.json$") then
-                    local charName = charFile:match("^" .. worldName .. "%.(.+)%.json$")
-                    table.insert(worldEntry.characters, charName)
-                end
-            end
-            
-            table.insert(menu.listOfWorlds, worldEntry)
-        end
+    -- Query to get distinct zones and tiers from the database
+    for row in db:nrows("SELECT DISTINCT name FROM sqlite_master WHERE type='table' AND name LIKE '%_tier%'") do
+        table.insert(zonesAndTiers, row.name)
     end
+    
+    db:close()
+    menu.listOfWorlds = zonesAndTiers
 end
 
 -- Initialize the menu
@@ -131,13 +128,9 @@ function menu.draw()
     -- Draw the list of worlds and their characters
     love.graphics.setColor(colors.text)
     y = buttonYStart + #menu.buttons * (buttonHeight + buttonSpacing) + buttonSpacing
-    for _, world in ipairs(menu.listOfWorlds) do
-        love.graphics.print("World: " .. world.name, 50, y)
+    for _, worldName in ipairs(menu.listOfWorlds) do
+        love.graphics.print("World: " .. worldName, 50, y)
         y = y + 20
-        for _, character in ipairs(world.characters) do
-            love.graphics.print("  Character: " .. character, 70, y)
-            y = y + 20
-        end
     end
 end
 

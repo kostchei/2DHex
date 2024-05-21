@@ -69,7 +69,7 @@ end
 -- end
 
 -- Input Handling
-function love.keypressed(key)
+function ui.keypressed(key)
     if key == "escape" and ui.currentUI ~= "menu" then
         ui.showMenu()
     elseif key == "c" and ui.currentUI ~= "character_sheet" then
@@ -79,7 +79,7 @@ function love.keypressed(key)
     end
 end
 
-function love.mousepressed(x, y, button, istouch, presses)
+function ui.mousepressed(x, y, button, istouch, presses)
     if currentUI and currentUI.mousepressed then
         currentUI.mousepressed(x, y, button, istouch, presses)
     end
@@ -96,9 +96,6 @@ function ui.draw()
     if currentUI and currentUI.draw then
         currentUI.draw(buttonYStart, buttonWidth, buttonHeight, buttonSpacing)
     end
-    -- if characterSheet.isVisible then
-    --     characterSheet.draw()
-    end
-
+end
 
 return ui

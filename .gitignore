@@ -17,6 +17,10 @@ luac.out
 *.gch
 *.pch
 
+# save games and new databases
+*.db
+*.db-journal
+
 # Libraries
 *.lib
 *.a
