@@ -1,51 +1,66 @@
--- Add the path to your package path
-package.path = package.path .. ";D:/Code/2DHex/plugins/sqlite3/?.lua" --;D:/Code/2DHex/plugins/sqlite3/?/init.lua"
---package.cpath = package.cpath .. ";D:/Code/2DHex/plugins/sqlite3/?.dll"
+-- world.lua
 
+package.path = package.path .. ";D:/Code/2DHex/plugins/sqlite3/?.lua"
 local sqlite3 = require("sqlite3")
 local world = {}
 
 -- Function to initialize the database
 function world.initDatabase()
     local db = sqlite3.open("world.db")
-    
-    -- Example: Create a table for a specific zone and tier
     db:exec[[
         CREATE TABLE IF NOT EXISTS forest_tier1 (
             x INTEGER,
             y INTEGER,
-            features TEXT,
+            terrain TEXT,
             PRIMARY KEY (x, y)
         );
     ]]
-    
     db:close()
 end
 
--- Function to create a new zone and tier
+-- Helper function for terrain choice
+function world.chooseTerrain(terrainTypes)
+    local rand = math.random()
+    local cumulative = 0
+    for terrain, probability in pairs(terrainTypes) do
+        cumulative = cumulative + probability
+        if rand <= cumulative then
+            return terrain
+        end
+    end
+    return "forest"  -- default return value if none selected
+end
+
+-- Function to create a new zone with terrain generation
 function world.createZone(zone, tier)
     local db = sqlite3.open("world.db")
     local tableName = zone .. "_tier" .. tier
-    
-    -- Create table if it doesn't exist
+
     db:exec("CREATE TABLE IF NOT EXISTS " .. tableName .. [[ (
         x INTEGER,
         y INTEGER,
-        features TEXT,
+        terrain TEXT,
         PRIMARY KEY (x, y)
     );]])
+
+    local terrainTypes = {
+        forest = 0.75,
+        open = 0.10,
+        hill = 0.10,
+        water = 0.03,
+        settlement = 0.02
+    }
     
-    -- Populate the table with new data
-    for i = 1, 1000 do
-        for j = 1, 1000 do
-            local features = "trees,water"  -- Example features
+    for i = 1, 10 do
+        for j = 1, 10 do
+            local terrain = world.chooseTerrain(terrainTypes)
             local stmt = db:prepare("INSERT OR REPLACE INTO " .. tableName .. " VALUES (?, ?, ?)")
-            stmt:bind_values(i, j, features)
+            stmt:bind_values(i, j, terrain)
             stmt:step()
             stmt:finalize()
         end
     end
-    
+
     db:close()
     print("New zone and tier created: " .. tableName)
 end
@@ -60,7 +75,7 @@ function world.loadZone(zone, tier)
         if not hexes[row.x] then
             hexes[row.x] = {}
         end
-        hexes[row.x][row.y] = { features = row.features }
+        hexes[row.x][row.y] = { terrain = row.terrain }
     end
     
     db:close()
@@ -73,7 +88,6 @@ function world.updateHex(zone, tier, x, y, newFeatures)
     local db = sqlite3.open("world.db")
     local tableName = zone .. "_tier" .. tier
     
-    -- Update hex features
     local stmt = db:prepare("INSERT OR REPLACE INTO " .. tableName .. " VALUES (?, ?, ?)")
     stmt:bind_values(x, y, table.concat(newFeatures, ","))
     stmt:step()
