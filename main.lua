@@ -1,3 +1,5 @@
+-- main.lua
+
 local ui = require("ui")
 local world = require("world")
 local hexmap = require("ui.components.hexmap")
@@ -30,10 +32,10 @@ end
 
 function love.draw()
     ui.draw()
-    
+
     -- Draw the hex map if it is loaded
     if world.hexes then
-        hexmap.draw(world.hexes)
+        hexmap.drawHexes(world.hexes)
     end
 end
 

@@ -7,7 +7,24 @@ local hexSize = 50
 local gridWidth = 10
 local gridHeight = 10
 
-function hexmap.draw(hexes)
+function hexmap.initialize()
+    -- Initialization code for the hex map
+    print("Hex Map initialized")
+end
+
+function hexmap.show()
+    -- Code to show the hex map
+end
+
+function hexmap.update(dt)
+    -- Update code for the hex map
+end
+
+function hexmap.draw(buttonYStart, buttonWidth, buttonHeight, buttonSpacing)
+    -- Placeholder draw function if needed
+end
+
+function hexmap.drawHexes(hexes)
     local startX = love.graphics.getWidth() / 2 - (gridWidth * hexSize * 0.75) / 2
     local startY = love.graphics.getHeight() / 2 - (gridHeight * hexSize * 0.866) / 2
     
@@ -27,6 +44,10 @@ function hexmap.draw(hexes)
             end
         end
     end
+end
+
+function hexmap.mousepressed(x, y, button, istouch, presses)
+    -- Handle mouse pressed events for the hex map
 end
 
 return hexmap

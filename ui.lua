@@ -6,17 +6,7 @@ ui.currentUI = "menu"  -- Start with the menu
 -- UI Components
 local menu = require("ui.components.menu")
 local characterSheet = require("ui.components.character_sheet")
--- local inventory = require("ui.components.inventory")
--- local hexmap = require("ui.components.hex_map")
--- local combatGrid = require("ui.components.combat_grid")
-
--- Button settings
-local buttonHeight = 50
-local buttonWidth = 4 * buttonHeight  -- Button width is four times the height
-local buttonSpacing = 20
-
--- Button positions
-local buttonYStart = 100
+local hexmap = require("ui.components.hexmap")
 
 -- Reference to the current active UI component
 local currentUI = menu  -- Start with the menu
@@ -25,48 +15,29 @@ function ui.initialize()
     -- Initialize UI components
     menu.initialize()
     characterSheet.initialize()
-    -- inventory.initialize()
-    -- hexmap.initialize()
-    -- combatGrid.initialize()
+    hexmap.initialize()
 
     -- Show the default UI
     ui.showMenu()
 end
 
--- Functions to show different UI components
 function ui.showMenu()
     ui.currentUI = "menu"
     currentUI = menu
     menu.show()
 end
 
-function ui.showCharacterSheet() -- example lazy initialization
+function ui.showCharacterSheet()
     ui.currentUI = "character_sheet"
     currentUI = characterSheet
-    if not characterSheet.isInitialized then
-        characterSheet.initialize()
-        characterSheet.isInitialized = true
-    end
     characterSheet.show()
 end
 
--- function ui.showInventory()
---     ui.currentUI = "inventory"
---     currentUI = inventory
---     inventory.show()
--- end
-
--- function ui.showHexMap()
---     ui.currentUI = "hex_map"
---     currentUI = hexmap
---     hexmap.show()
--- end
-
--- function ui.showCombatGrid()
---     ui.currentUI = "combat_grid"
---     currentUI = combatGrid
---     combatGrid.show()
--- end
+function ui.showHexMap()
+    ui.currentUI = "hexmap"
+    currentUI = hexmap
+    hexmap.show()
+end
 
 -- Input Handling
 function ui.keypressed(key)
@@ -74,8 +45,6 @@ function ui.keypressed(key)
         ui.showMenu()
     elseif key == "c" and ui.currentUI ~= "character_sheet" then
         ui.showCharacterSheet()
-    -- elseif key == "i" and ui.currentUI ~= "inventory" then
-    --     ui.showInventory()
     end
 end
 
@@ -94,7 +63,7 @@ end
 
 function ui.draw()
     if currentUI and currentUI.draw then
-        currentUI.draw(buttonYStart, buttonWidth, buttonHeight, buttonSpacing)
+        currentUI.draw()
     end
 end
 
