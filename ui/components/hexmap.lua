@@ -1,5 +1,3 @@
--- ui/components/hexmap.lua
-
 local hexmap = {}
 
 -- Configuration
@@ -8,7 +6,6 @@ local gridWidth = 10
 local gridHeight = 10
 
 function hexmap.initialize()
-    -- Initialization code for the hex map
     print("Hex Map initialized")
 end
 
@@ -17,11 +14,7 @@ function hexmap.show()
 end
 
 function hexmap.update(dt)
-    -- Update code for the hex map
-end
-
-function hexmap.draw(buttonYStart, buttonWidth, buttonHeight, buttonSpacing)
-    -- Placeholder draw function if needed
+    -- Update code for the hex map (if needed)
 end
 
 function hexmap.drawHexes(hexes)
@@ -36,6 +29,7 @@ function hexmap.drawHexes(hexes)
             -- Ensure the terrain field is valid
             if hex.terrain then
                 local terrainImagePath = "images/" .. hex.terrain .. ".png"
+                print("Loading image: " .. terrainImagePath)  -- Debug print
                 local terrainImage = love.graphics.newImage(terrainImagePath)
                 love.graphics.draw(terrainImage, hexX, hexY)
             else

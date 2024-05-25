@@ -1,5 +1,3 @@
--- ui.lua
-
 local ui = {}
 ui.currentUI = "menu"  -- Start with the menu
 
@@ -7,6 +5,7 @@ ui.currentUI = "menu"  -- Start with the menu
 local menu = require("ui.components.menu")
 local characterSheet = require("ui.components.character_sheet")
 local hexmap = require("ui.components.hexmap")
+local world = require("world")  -- Include world module
 
 -- Reference to the current active UI component
 local currentUI = menu  -- Start with the menu
@@ -33,7 +32,13 @@ function ui.showCharacterSheet()
     characterSheet.show()
 end
 
-function ui.showHexMap()
+function ui.showHexMap(mode)
+    if mode == "new" then
+        world.createZone("new_zone", 1)
+        world.loadZone("new_zone", 1)
+    elseif mode == "load" then
+        world.loadZone("forest", 1)
+    end
     ui.currentUI = "hexmap"
     currentUI = hexmap
     hexmap.show()
@@ -45,6 +50,8 @@ function ui.keypressed(key)
         ui.showMenu()
     elseif key == "c" and ui.currentUI ~= "character_sheet" then
         ui.showCharacterSheet()
+    elseif key == "h" and ui.currentUI ~= "hexmap" then
+        ui.showHexMap("load")
     end
 end
 

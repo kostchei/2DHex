@@ -1,7 +1,6 @@
--- world.lua
-
 package.path = package.path .. ";D:/Code/2DHex/plugins/sqlite3/?.lua"
 local sqlite3 = require("sqlite3")
+local hexmap = require("ui.components.hexmap")
 local world = {}
 
 -- Function to initialize the database
@@ -58,6 +57,7 @@ function world.createZone(zone, tier)
             stmt:bind_values(i, j, terrain)
             stmt:step()
             stmt:finalize()
+            print("Set terrain for (" .. i .. ", " .. j .. "): " .. terrain)  -- Debug print
         end
     end
 
@@ -76,6 +76,7 @@ function world.loadZone(zone, tier)
             hexes[row.x] = {}
         end
         hexes[row.x][row.y] = { terrain = row.terrain }
+        print("Loaded terrain for (" .. row.x .. ", " .. row.y .. "): " .. tostring(row.terrain))  -- Debug print
     end
     
     db:close()
@@ -97,12 +98,24 @@ function world.updateHex(zone, tier, x, y, newFeatures)
     print("Hex updated in " .. tableName .. ": (" .. x .. ", " .. y .. ")")
 end
 
+-- Real function to update the world
 function world.update(dt)
-    -- Placeholder update function
+    -- Example: Update all entities in the world (if any)
+    -- This could involve moving characters, handling game logic, etc.
+    for x, column in pairs(world.hexes) do
+        for y, hex in pairs(column) do
+            -- Example update logic (e.g., moving entities, updating state)
+            -- print("Updating hex at (" .. x .. ", " .. y .. ") with terrain: " .. hex.terrain)
+            -- Perform updates on each hex or entities within the hex
+        end
+    end
 end
 
+-- Function to draw the world
 function world.draw()
-    -- Placeholder draw function
+    if world.hexes then
+        hexmap.drawHexes(world.hexes)
+    end
 end
 
 return world

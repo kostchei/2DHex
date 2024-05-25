@@ -34,13 +34,16 @@ function love.draw()
     ui.draw()
 
     -- Draw the hex map if it is loaded
-    if world.hexes then
+    if world.hexes and ui.currentUI == "hexmap" then
         hexmap.drawHexes(world.hexes)
     end
 end
 
 function love.keypressed(key)
     ui.keypressed(key)
+    if key == "h" then
+        ui.showHexMap("load")
+    end
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
